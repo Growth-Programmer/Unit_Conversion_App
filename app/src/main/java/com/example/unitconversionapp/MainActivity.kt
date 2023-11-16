@@ -53,159 +53,167 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-fun UnitConverter() {
 
-    var inputValue by remember { mutableStateOf("") }
-    var outputValue by remember { mutableStateOf("0.0") }
-    var inputUnit by remember { mutableStateOf("Input") }
-    var outputUnit by remember { mutableStateOf("Output") }
-    var resultUnit by remember { mutableStateOf("") }
-    var iExpanded by remember { mutableStateOf(false) }
-    var oExpanded by remember { mutableStateOf(false) }
-    val conversionFactor = remember { mutableStateOf(1.00) }
-    val outputConversionFactor = remember { mutableStateOf(1.00) }
+    @Composable
+    fun UnitConverter() {
 
-    fun convertUnits(){
+        var inputValue by remember { mutableStateOf("") }
+        var outputValue by remember { mutableStateOf("0.0") }
+        var inputUnit by remember { mutableStateOf("Input") }
+        var outputUnit by remember { mutableStateOf("Output") }
+        var resultUnit by remember { mutableStateOf("") }
+        var iExpanded by remember { mutableStateOf(false) }
+        var oExpanded by remember { mutableStateOf(false) }
+        val conversionFactor = remember { mutableStateOf(1.00) }
+        val outputConversionFactor = remember { mutableStateOf(1.00) }
 
-        // ?: elvis operator
-        val inputValueDouble = inputValue.toDoubleOrNull() ?: 0.0
-        val result = ((inputValueDouble * conversionFactor.value) * ( 100.0 / outputConversionFactor.value)).roundToInt() / 100.0
-        outputValue = result.toString()
-    }
+        fun convertUnits() {
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        Text("Unit Converter")
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = inputValue,
-            onValueChange = {
-                inputValue = it
-                convertUnits()},
-            label = { Text("Enter Value") })
-        Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            //Input Select Button
-            Box {
-                Button(onClick = {iExpanded = true }) {
-                    Text("${inputUnit}")
-                    Icon(
-                        Icons.Default.ArrowDropDown,
-                        contentDescription = ""
-                    )
-                }
-                DropdownMenu(
-                    expanded = iExpanded,
-                    onDismissRequest = {iExpanded = false})
-
-                {
-                    DropdownMenuItem(
-                        text = { Text("Centimeters") },
-                        onClick = {
-                            iExpanded = false
-                            inputUnit = "Centimeters"
-                            conversionFactor.value = 0.01
-                            convertUnits()
-                        })
-
-                    DropdownMenuItem(
-                        text = { Text("Inches") },
-                        onClick = {
-                            iExpanded = false
-                            inputUnit = "Inches"
-                            conversionFactor.value = 0.0254
-                            convertUnits()
-                        })
-
-                    DropdownMenuItem(
-                        text = { Text("Feet") },
-                        onClick = {
-                            iExpanded = false
-                            inputUnit = "Feet"
-                            conversionFactor.value = 0.3048
-                            convertUnits()
-                        })
-
-                    DropdownMenuItem(
-                        text = { Text("Meters") },
-                        onClick = { iExpanded = false
-                            inputUnit = "Meters"
-                            conversionFactor.value = 1.0
-                            convertUnits() })
-                }
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            //Output button selector
-            Box {
-                Button(onClick = {oExpanded = true }) {
-                    Text("${outputUnit}")
-                    Icon(
-                        Icons.Default.ArrowDropDown,
-                        contentDescription = ""
-                    )
-                }
-                DropdownMenu(
-                    expanded = oExpanded,
-                    onDismissRequest = {oExpanded = false})
-                {
-                    DropdownMenuItem(
-                        text = { Text("Centimeters") },
-                        onClick = {
-                            oExpanded = false
-                            outputUnit = "Centimeters"
-                            resultUnit = "Centimeters"
-                            outputConversionFactor.value = 0.01
-                            convertUnits()
-                        })
-
-                    DropdownMenuItem(
-                        text = { Text("Inches") },
-                        onClick = {
-                            oExpanded = false
-                            outputUnit = "Inches"
-                            resultUnit = "Inches"
-                            outputConversionFactor.value = 0.0254
-                            convertUnits()
-                        })
-
-                    DropdownMenuItem(
-                        text = { Text("Feet") },
-                        onClick = {
-                            oExpanded = false
-                            outputUnit = "Feet"
-                            resultUnit = "Feet"
-                            outputConversionFactor.value = 0.3048
-                            convertUnits()
-                        })
-
-                    DropdownMenuItem(
-                        text = { Text("Meters") },
-                        onClick = {
-                            oExpanded = false
-                            outputUnit = "Meters"
-                            resultUnit = "Meters"
-                            outputConversionFactor.value = 1.00
-                            convertUnits()
-                        })
-                }
-            }
+            // ?: elvis operator
+            val inputValueDouble = inputValue.toDoubleOrNull() ?: 0.0
+            val result =
+                ((inputValueDouble * conversionFactor.value) * (100.0 / outputConversionFactor.value)).roundToInt() / 100.0
+            outputValue = result.toString()
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("Result: ${outputValue} ${resultUnit}")
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
+        {
+            Text("Unit Converter",
+                style = MaterialTheme.typography.headlineLarge)
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = inputValue,
+                onValueChange = {
+                    inputValue = it
+                    convertUnits()
+                },
+                label = { Text("Enter Value") })
+            Spacer(modifier = Modifier.height(16.dp))
+            Row {
+                //Input Select Button
+                Box {
+                    Button(onClick = { iExpanded = true }) {
+                        Text("${inputUnit}")
+                        Icon(
+                            Icons.Default.ArrowDropDown,
+                            contentDescription = ""
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = iExpanded,
+                        onDismissRequest = { iExpanded = false })
+
+                    {
+                        DropdownMenuItem(
+                            text = { Text("Centimeters") },
+                            onClick = {
+                                iExpanded = false
+                                inputUnit = "Centimeters"
+                                conversionFactor.value = 0.01
+                                convertUnits()
+                            })
+
+                        DropdownMenuItem(
+                            text = { Text("Inches") },
+                            onClick = {
+                                iExpanded = false
+                                inputUnit = "Inches"
+                                conversionFactor.value = 0.0254
+                                convertUnits()
+                            })
+
+                        DropdownMenuItem(
+                            text = { Text("Feet") },
+                            onClick = {
+                                iExpanded = false
+                                inputUnit = "Feet"
+                                conversionFactor.value = 0.3048
+                                convertUnits()
+                            })
+
+                        DropdownMenuItem(
+                            text = { Text("Meters") },
+                            onClick = {
+                                iExpanded = false
+                                inputUnit = "Meters"
+                                conversionFactor.value = 1.0
+                                convertUnits()
+                            })
+                    }
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                //Output button selector
+                Box {
+                    Button(onClick = { oExpanded = true }) {
+                        Text("${outputUnit}")
+                        Icon(
+                            Icons.Default.ArrowDropDown,
+                            contentDescription = ""
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = oExpanded,
+                        onDismissRequest = { oExpanded = false })
+                    {
+                        DropdownMenuItem(
+                            text = { Text("Centimeters") },
+                            onClick = {
+                                oExpanded = false
+                                outputUnit = "Centimeters"
+                                resultUnit = "Centimeters"
+                                outputConversionFactor.value = 0.01
+                                convertUnits()
+                            })
+
+                        DropdownMenuItem(
+                            text = { Text("Inches") },
+                            onClick = {
+                                oExpanded = false
+                                outputUnit = "Inches"
+                                resultUnit = "Inches"
+                                outputConversionFactor.value = 0.0254
+                                convertUnits()
+                            })
+
+                        DropdownMenuItem(
+                            text = { Text("Feet") },
+                            onClick = {
+                                oExpanded = false
+                                outputUnit = "Feet"
+                                resultUnit = "Feet"
+                                outputConversionFactor.value = 0.3048
+                                convertUnits()
+                            })
+
+                        DropdownMenuItem(
+                            text = { Text("Meters") },
+                            onClick = {
+                                oExpanded = false
+                                outputUnit = "Meters"
+                                resultUnit = "Meters"
+                                outputConversionFactor.value = 1.00
+                                convertUnits()
+                            })
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Result: ${outputValue} ${resultUnit}",
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }
     }
-}
 
 
-@Preview(showBackground = true)
-@Composable
-fun UnitConverterPreview() {
-    UnitConverter()
+    @Preview(showBackground = true)
+    @Composable
+    fun UnitConverterPreview() {
+        UnitConverter()
 
+    }
 }
